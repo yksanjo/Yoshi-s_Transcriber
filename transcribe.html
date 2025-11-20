@@ -259,6 +259,12 @@
         let isRecording = false;
         let finalTranscriptText = '';
 
+        // Check if page is served over HTTPS (required for Web Speech API)
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            status.textContent = '⚠️ This app requires HTTPS. Please access via Railway URL (HTTPS).';
+            status.style.color = '#f5576c';
+        }
+
         // Check if browser supports speech recognition
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -274,6 +280,7 @@
                 stopBtn.disabled = false;
                 status.innerHTML = '<span class="recording-indicator"></span>Recording...';
                 status.classList.add('recording');
+                status.style.color = '';
                 // Only reset if starting fresh (not auto-restarting)
                 if (transcriptArea.value === '') {
                     finalTranscriptText = '';
@@ -309,7 +316,20 @@
 
             recognition.onerror = (event) => {
                 console.error('Speech recognition error:', event.error);
-                status.textContent = `Error: ${event.error}`;
+                let errorMessage = `Error: ${event.error}`;
+                
+                // Provide helpful messages for common errors
+                if (event.error === 'not-allowed') {
+                    errorMessage = 'Microphone access denied. Please allow microphone access in your browser settings and reload the page.';
+                } else if (event.error === 'service-not-allowed') {
+                    errorMessage = 'Speech recognition service not allowed. Please ensure you are using HTTPS and check browser permissions.';
+                } else if (event.error === 'no-speech') {
+                    errorMessage = 'No speech detected. Please try speaking again.';
+                } else if (event.error === 'network') {
+                    errorMessage = 'Network error. Please check your internet connection.';
+                }
+                
+                status.textContent = errorMessage;
                 status.classList.remove('recording');
                 isRecording = false;
                 startBtn.disabled = false;
@@ -338,16 +358,31 @@
                 }
             };
 
-            startBtn.addEventListener('click', () => {
+            startBtn.addEventListener('click', async () => {
                 transcriptArea.value = '';
                 copyBtn.disabled = true;
                 finalTranscriptText = '';
-                lastProcessedIndex = 0;
+                
+                // Request microphone permission first
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    // Stop the stream immediately, we just needed permission
+                    stream.getTracks().forEach(track => track.stop());
+                } catch (err) {
+                    status.textContent = 'Microphone permission denied. Please allow microphone access and try again.';
+                    status.classList.remove('recording');
+                    return;
+                }
+                
                 try {
                     recognition.start();
                 } catch (e) {
                     console.error('Error starting recognition:', e);
-                    status.textContent = 'Error starting recognition. Please try again.';
+                    if (e.message && e.message.includes('not-allowed')) {
+                        status.textContent = 'Service not allowed. Please check microphone permissions and ensure you are using HTTPS.';
+                    } else {
+                        status.textContent = 'Error starting recognition: ' + e.message;
+                    }
                 }
             });
 
@@ -362,6 +397,13 @@
             status.textContent = 'Speech recognition not supported in this browser. Please use Chrome, Edge, or Safari.';
             startBtn.disabled = true;
             stopBtn.disabled = true;
+        }
+
+        // Set initial status if everything is ready
+        if (recognition && location.protocol === 'https:') {
+            status.textContent = 'Ready to record. Click "Start Recording" to begin.';
+        } else if (recognition && (location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+            status.textContent = 'Ready to record. Click "Start Recording" to begin.';
         }
 
         // Copy button functionality
