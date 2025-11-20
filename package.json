@@ -1,0 +1,23 @@
+{
+  "name": "yoshi-transcriber",
+  "version": "1.0.0",
+  "description": "Speech transcription web app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "transcription",
+    "speech-recognition",
+    "web-app"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+
