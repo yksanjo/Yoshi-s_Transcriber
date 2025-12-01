@@ -3,6 +3,9 @@
 [![GitHub stars](https://img.shields.io/github/stars/yksanjo/Yoshi-s_Transcriber?style=social)](https://github.com/yksanjo/Yoshi-s_Transcriber/stargazers) [![GitHub forks](https://img.shields.io/github/forks/yksanjo/Yoshi-s_Transcriber.svg)](https://github.com/yksanjo/Yoshi-s_Transcriber/network/members) [![GitHub issues](https://img.shields.io/github/issues/yksanjo/Yoshi-s_Transcriber.svg)](https://github.com/yksanjo/Yoshi-s_Transcriber/issues) [![Last commit](https://img.shields.io/github/last-commit/yksanjo/Yoshi-s_Transcriber.svg)](https://github.com/yksanjo/Yoshi-s_Transcriber/commits/main)
 
 
+[![GitHub stars](https://img.shields.io/github/stars/yksanjo/Yoshi-s_Transcriber?style=social)](https://github.com/yksanjo/Yoshi-s_Transcriber/stargazers) [![GitHub forks](https://img.shields.io/github/forks/yksanjo/Yoshi-s_Transcriber.svg)](https://github.com/yksanjo/Yoshi-s_Transcriber/network/members) [![GitHub issues](https://img.shields.io/github/issues/yksanjo/Yoshi-s_Transcriber.svg)](https://github.com/yksanjo/Yoshi-s_Transcriber/issues) [![Last commit](https://img.shields.io/github/last-commit/yksanjo/Yoshi-s_Transcriber.svg)](https://github.com/yksanjo/Yoshi-s_Transcriber/commits/main)
+
+
 A beautiful web application for real-time speech transcription using the Web Speech API.
 
 ## Features
