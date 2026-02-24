@@ -29,7 +29,7 @@ export function assess(signal) {
 
 export function summarize(signal) {
   const result = assess(signal);
-  return ;
+  return `${result.project} [${result.domain}] status=${result.status} score=${result.score.toFixed(2)}`;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
